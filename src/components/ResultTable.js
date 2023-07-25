@@ -1,9 +1,7 @@
-import styles from './ResultTable.module.css';
+import styles from "./ResultTable.module.css";
 
 const ResultTable = (props) => {
-
-  if(props.yearlyTableData.length === 0)
-  {
+  if (props.yearlyTableData.length === 0) {
     return <h2 className={styles["no-data-text"]}>No data to show</h2>;
   }
 
@@ -21,12 +19,23 @@ const ResultTable = (props) => {
       <tbody>
         {props.yearlyTableData.map((tableEntry) => {
           return (
-            <tr>
+            <tr key={tableEntry.year}>
               <td>{tableEntry.year}</td>
               <td>{props.formatter.format(tableEntry.savingsEndOfYear)}</td>
               <td>{props.formatter.format(tableEntry.yearlyInterest)}</td>
-              <td>{props.formatter.format(tableEntry.totalInterest)}</td>
-              <td>{props.formatter.format(tableEntry.investedCapital)}</td>
+              <td>
+                {props.formatter.format(
+                  tableEntry.savingsEndOfYear -
+                    props.initialInvestment -
+                    tableEntry.yearlyContribution * tableEntry.year
+                )}
+              </td>
+              <td>
+                {props.formatter.format(
+                  props.initialInvestment +
+                    tableEntry.yearlyContribution * tableEntry.year
+                )}
+              </td>
             </tr>
           );
         })}
